@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function signedIn() { return request.auth != null; }
+    function owns(id) { return signedIn() && request.auth.uid == id; }
+    function isAdmin() { return signedIn() && exists(/databases/$(db)/documents/admins/$(request.auth.uid)); }
+
+    match /admins/{id}   { allow read: if owns(id); }
+    match /courses/{id}  { allow read: if true; allow write: if isAdmin(); }
+    match /settings/{id} { allow read: if true; allow write: if isAdmin(); }
+    // ভিডিও লিংক: শুধু admin বা approved student পড়তে পারবে
+    match /content/{id} {
+      allow read: if isAdmin() || (signedIn() && id in get(/databases/$(db)/documents/access/$(request.auth.uid)).data.courses);
+      allow write: if isAdmin();
+    }
+    // access দিতে পারবে শুধু admin
+    match /access/{uid}  { allow read: if owns(uid) || isAdmin(); allow write: if isAdmin(); }
+    match /reqs/{uid}    { allow read, write: if owns(uid) || isAdmin(); }
+    match /users/{uid}   { allow create, update: if owns(uid); allow read: if owns(uid) || isAdmin(); }
+  }
+}
