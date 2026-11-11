@@ -7,6 +7,7 @@ service cloud.firestore {
 
     match /admins/{id}   { allow read: if owns(id); }
     match /courses/{id}  { allow read: if true; allow write: if isAdmin(); }
+    match /updates/{id}  { allow read: if true; allow write: if isAdmin(); }
     match /settings/{id} { allow read: if true; allow write: if isAdmin(); }
     // ভিডিও লিংক: শুধু admin বা approved student পড়তে পারবে
     match /content/{id} {

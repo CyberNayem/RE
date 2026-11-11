@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="bn"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Revive Education</title>
+<title>Revive Education | SSC Biology & Chemistry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f1f6ff;--card:#fff;--tx:#0f1f3d;--mut:#5b6b8a;--pri:#1d5fe0;--pri2:#0b3fa8;--bd:#d6e2fa;--ok:#13875a;--bad:#c93232;--warn:#b7791f}
 :root:not([data-theme="light"]){color-scheme:light dark}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1428;--card:#13213f;--tx:#e8efff;--mut:#9fb2d6;--pri:#4d8bff;--pri2:#2f6fe8;--bd:#233a68}}
 :root[data-theme="dark"]{--bg:#0b1428;--card:#13213f;--tx:#e8efff;--mut:#9fb2d6;--pri:#4d8bff;--pri2:#2f6fe8;--bd:#233a68}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Bengali",sans-serif;line-height:1.5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:"Hind Siliguri",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
 header{background:linear-gradient(135deg,var(--pri2),var(--pri));color:#fff;padding:12px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
 .logo{font-weight:800;font-size:20px;letter-spacing:.3px}.logo span{opacity:.8;font-weight:500}
 nav{display:flex;gap:4px;flex-wrap:wrap}nav button{background:transparent;color:#fff;border:0;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:14px}nav button.on,nav button:hover{background:rgba(255,255,255,.2)}
@@ -44,6 +46,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .steps{counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}.steps .card::before{counter-increment:s;content:counter(s);display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--pri);color:#fff;align-items:center;justify-content:center;font-weight:700;margin-bottom:6px}
 .card{transition:transform .15s,box-shadow .15s}.card:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(29,95,224,.15)}
 footer{background:#0b2a6e;color:#cfe0ff;text-align:center;padding:26px 14px calc(26px + env(safe-area-inset-bottom,0px));font-size:14px}footer a{color:#9cc2ff;cursor:pointer;text-decoration:underline}
+button,input,textarea,select{font-family:inherit}
+.upd{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--bd)}.upd:last-child{border:0}.ud{min-width:64px;text-align:center;background:var(--bg);border-radius:10px;padding:6px;font-size:13px;color:var(--mut);height:fit-content}.upd p{margin:4px 0 0;color:var(--mut);font-size:15px}
+.sec{margin:26px 0 10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.sec h2{margin:0}.about{font-size:17px;line-height:1.8}
+.feat .card{cursor:pointer}.feat .card h3{color:var(--pri)}
 @media(max-width:700px){.hero2{grid-template-columns:1fr;padding:26px 18px}.hero2 h1{font-size:26px}.heroart{font-size:70px}}
 </style></head><body>
 <header><div class="logo">🎓 Revive <span>Education</span></div><nav id="nav"></nav></header>
@@ -53,7 +59,7 @@ footer{background:#0b2a6e;color:#cfe0ff;text-align:center;padding:26px 14px calc
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {getFirestore,doc,collection,setDoc,getDoc,deleteDoc,onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const S={content:{},courses:[],pay:{},access:{courses:[],rejected:[]},myReqs:[],allReqs:[],accAll:[],view:'home',admTab:'req',me:null,admin:false,watch:null,lesson:0,ready:false};
+const S={updates:[],content:{},courses:[],pay:{},access:{courses:[],rejected:[]},myReqs:[],allReqs:[],accAll:[],view:'home',admTab:'req',me:null,admin:false,watch:null,lesson:0,ready:false};
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const tk=n=>'৳'+Number(n||0).toLocaleString('en-US');
 function yt(u){const m=String(u).match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/);return m?'https://www.youtube-nocookie.com/embed/'+m[1]+'?rel=0&modestbranding=1':null}
@@ -67,6 +73,7 @@ function boot(){
   app=initializeApp(cfg);auth=getAuth(app);fs=getFirestore(app);
   db={doc:p=>({set:d=>setDoc(doc(fs,p),d),delete:()=>deleteDoc(doc(fs,p))})};
   onSnapshot(collection(fs,'courses'),s=>{S.courses=s.docs.map(d=>({id:d.id,...d.data()}));S.ready=true;render()},()=>{});
+  onSnapshot(collection(fs,'updates'),s=>{S.updates=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.ts||0)-(a.ts||0));render()},()=>{});
   onSnapshot(doc(fs,'settings/pay'),s=>{S.pay=s.data()||{};render()},()=>{});
   onAuthStateChanged(auth,async u=>{
     unsubs.forEach(f=>f());unsubs=[];subbed={};S.content={};S.access={courses:[],rejected:[]};S.myReqs=[];S.allReqs=[];S.accAll=[];S.admin=false;
@@ -82,20 +89,27 @@ function boot(){
       on(collection(fs,'content'),s=>{s.docs.forEach(d=>S.content[d.id]=d.data());render()})}
     render()})}
 function subContent(){if(S.admin)return;S.access.courses.forEach(id=>{if(subbed[id])return;subbed[id]=1;unsubs.push(onSnapshot(doc(fs,'content/'+id),s=>{S.content[id]=s.data()||{};render()},()=>{}))})}
-function nav(){const t=[['home','Home'],['courses','Courses'],['resources','Resources'],['mine','My Learning']];if(S.admin)t.push(['admin','⚙ Admin']);
+function nav(){const t=[['home','Home'],['courses','Courses'],['resources','Resources'],['updates','Updates'],['mine','My Learning']];if(S.admin)t.push(['admin','⚙ Admin']);
   $('#nav').innerHTML=t.map(([k,l])=>`<button class="${S.view===k?'on':''}" onclick="go('${k}')">${l}</button>`).join('')+(S.me?`<button style="opacity:.9">👤 ${esc(S.me.name)}</button><button onclick="logout()">Logout</button>`:`<button onclick="authOpen('login')">Login</button><button style="background:#fff;color:var(--pri2)" onclick="authOpen('signup')">Sign Up</button>`)}
 function go(v){S.view=v;S.watch=null;render();scrollTo(0,0)}
 function card(c){const st=reqStatus(c);
   return `<div class="card"><div class="cv">${esc(c.icon||(c.type==='resource'?'📄':'🎬'))}</div><span class="tag">${c.type==='resource'?'Resource':'Course'}</span><h3>${esc(c.title)}</h3><p class="mut">${esc(c.desc||'')}</p><div class="row" style="border:0;padding:0"><span class="price">${tk(c.price)}</span>${
   st==='ok'?`<button class="btn green sm" onclick="open_('${c.id}')">Open ▶</button>`:st==='warn'?'<span class="tag warn">Pending approval</span>':`<button class="btn sm" onclick="buy('${c.id}')">${st==='bad'?'Rejected – আবার চেষ্টা':'Buy now'}</button>`}</div></div>`}
 function list(type){const a=S.courses.filter(c=>!type||c.type===type||(type==='course'&&!c.type));return a.length?`<div class="grid">${a.map(card).join('')}</div>`:'<div class="card mut">এখনো কিছু যোগ করা হয়নি।</div>'}
+const fmt=t=>t?new Date(t).toLocaleDateString('bn-BD',{day:'numeric',month:'short'}):'';
+const tcls=t=>({'গুরুত্বপূর্ণ':'bad','নতুন':'ok','পরীক্ষা':'warn'}[t]||'');
+const updList=a=>a.length?a.map(u=>`<div class="upd"><div class="ud">${fmt(u.ts)}</div><div><span class="tag ${tcls(u.tag)}">${esc(u.tag||'সাধারণ')}</span> <b>${esc(u.title)}</b><p>${esc(u.text).replace(/\n/g,'<br>')}</p></div></div>`).join(''):'<span class="mut">এখনো কোনো update নেই।</span>';
 function render(){nav();const v=S.view,A=$('#app');
-  if(v==='home'){const nc=S.courses.filter(c=>c.type!=='resource').length,nr=S.courses.length-nc;A.innerHTML=`<section class="hero2"><div><span class="pill">🎓 তোমার অনলাইন শেখার ঠিকানা</span><h1>শেখো সহজে,<br>এগিয়ে যাও <em>নিজের গতিতে</em></h1><p>Recorded class, notes ও resource — সব এক জায়গায়। কোর্স কিনে যেকোনো সময়, যেকোনো জায়গা থেকে শেখো।</p><button class="btn big" onclick="go('courses')">কোর্স দেখো →</button><button class="btn big g2" onclick="go('resources')">Resources</button></div><div class="heroart">📚</div></section>
+  if(v==='home'){const nc=S.courses.filter(c=>c.type!=='resource').length,nr=S.courses.length-nc;A.innerHTML=`<section class="hero2"><div><span class="pill">🎓 SSC Biology ও Chemistry</span><h1>বিজ্ঞান শেখো <em>সহজ ভাষায়</em>, প্রস্তুতি নাও আত্মবিশ্বাসে</h1><p>Revive Education-এ SSC-র Biology, Chemistry ও আরও বিষয়ের গোছানো recorded class, notes আর resource পাবে — যেকোনো সময়, যেকোনো জায়গা থেকে।</p><button class="btn big" onclick="go('courses')">কোর্স দেখো →</button><button class="btn big g2" onclick="${S.uid?"go('mine')":"authOpen('signup')"}">${S.uid?'My Learning':'Sign Up করো'}</button></div><div class="heroart">🧬</div></section>
 <div class="stats"><div class="stat"><b>${nc}</b>কোর্স</div><div class="stat"><b>${nr}</b>Resource</div><div class="stat"><b>24/7</b>Access</div><div class="stat"><b>HD</b>Video Class</div></div>
-<h2>কেন Revive Education?</h2><div class="feat"><div class="card"><div class="ic">🎬</div><h3>Recorded Class</h3><p class="mut">যতবার খুশি দেখো, নিজের সময়ে।</p></div><div class="card"><div class="ic">📄</div><h3>Notes & Resource</h3><p class="mut">প্রস্তুতির জন্য গুছানো study material।</p></div><div class="card"><div class="ic">📱</div><h3>সহজ Payment</h3><p class="mut">bKash/Nagad-এ টাকা পাঠিয়ে request দাও।</p></div><div class="card"><div class="ic">⚡</div><h3>দ্রুত Approve</h3><p class="mut">যাচাইয়ের পরই access চালু।</p></div></div>
-<h2>কীভাবে কিনবে?</h2><div class="steps"><div class="card"><h3>কোর্স বাছাই করো</h3><p class="mut">Buy now চাপো।</p></div><div class="card"><h3>টাকা পাঠাও</h3><p class="mut">দেওয়া নম্বরে Send Money করো।</p></div><div class="card"><h3>Request দাও</h3><p class="mut">Sender number, amount ও TrxID লেখো।</p></div><div class="card"><h3>Access পাও</h3><p class="mut">Approve হলেই My Learning-এ খুলবে।</p></div></div>
-<h2>সব কোর্স ও Resource</h2>${list()}`}
-  else if(v==='courses')A.innerHTML=`<h2>Courses</h2>${list('course')}`;
+<div class="sec"><h2>Revive Education সম্পর্কে</h2></div><div class="card about"><p style="margin:0">Revive Education একটি অনলাইন শিক্ষা প্ল্যাটফর্ম, যেখানে SSC শিক্ষার্থীদের জন্য কঠিন বিষয়গুলো সহজ উপস্থাপনায় শেখানো হয়। আমাদের লক্ষ্য — মুখস্থ নয়, বুঝে শেখা। প্রতিটি ক্লাস ধাপে ধাপে সাজানো, যাতে পরীক্ষার প্রস্তুতি হয় গোছানো ও চাপমুক্ত।</p></div>
+<div class="sec"><h2>আমাদের বিষয়সমূহ</h2></div><div class="feat"><div class="card" onclick="go('courses')"><div class="ic">🧬</div><h3>Biology</h3><p class="mut">SSC জীববিজ্ঞান — সহজ ব্যাখ্যায় প্রতিটি অধ্যায়।</p></div><div class="card" onclick="go('courses')"><div class="ic">⚗️</div><h3>Chemistry</h3><p class="mut">রসায়ন — সূত্র, বিক্রিয়া ও সমস্যা সমাধান।</p></div><div class="card" onclick="go('resources')"><div class="ic">📄</div><h3>Notes & Resource</h3><p class="mut">প্রস্তুতির জন্য গোছানো study material।</p></div><div class="card"><div class="ic">➕</div><h3>আরও বিষয়</h3><p class="mut">নতুন বিষয় শীঘ্রই যোগ হবে।</p></div></div>
+<div class="sec"><h2>📢 সর্বশেষ Updates</h2><button class="btn ghost sm" onclick="go('updates')">সব দেখো →</button></div><div class="card">${updList(S.updates.slice(0,3))}</div>
+<div class="sec"><h2>কেন Revive Education?</h2></div><div class="feat"><div class="card"><div class="ic">🎬</div><h3>Recorded Class</h3><p class="mut">যতবার খুশি দেখো, নিজের সময়ে।</p></div><div class="card"><div class="ic">📱</div><h3>সহজ Payment</h3><p class="mut">bKash/Nagad-এ টাকা পাঠিয়ে request দাও।</p></div><div class="card"><div class="ic">⚡</div><h3>দ্রুত Approve</h3><p class="mut">যাচাইয়ের পরই access চালু।</p></div></div>
+<div class="sec"><h2>কীভাবে কিনবে?</h2></div><div class="steps"><div class="card"><h3>Sign Up করো</h3><p class="mut">Email দিয়ে account খোলো।</p></div><div class="card"><h3>কোর্স বাছাই</h3><p class="mut">Buy now চাপো।</p></div><div class="card"><h3>টাকা পাঠাও</h3><p class="mut">দেওয়া নম্বরে Send Money।</p></div><div class="card"><h3>Request দাও</h3><p class="mut">Sender number, amount ও TrxID লেখো।</p></div></div>
+<div class="sec"><h2>সব কোর্স ও Resource</h2></div>${list()}`}
+else if(v==='updates')A.innerHTML=`<h2>📢 Updates</h2><div class="card">${updList(S.updates)}</div>`;
+else if(v==='courses')A.innerHTML=`<h2>Courses</h2>${list('course')}`;
   else if(v==='resources')A.innerHTML=`<h2>Resources</h2>${list('resource')}`;
   else if(v==='mine')mine(A);else if(v==='admin'&&S.admin)admin(A);}
 function mine(A){if(!S.uid){A.innerHTML=`<div class="card"><h3>Login করুন</h3><p>My Learning দেখতে Login বা Sign Up করুন।</p><button class="btn" onclick="authOpen('login')">Login / Sign Up</button></div>`;return}const m=S.courses.filter(c=>owned(c.id));
@@ -114,12 +128,13 @@ async function submitReq(cid){const c=S.courses.find(x=>x.id===cid),s=$('#f1').v
   const items=[...S.myReqs,{rid:'r'+Date.now(),cid,title:c.title,sender:s,amount:a,trx:t,ts:Date.now(),name:S.me.name||''}];
   try{await db.doc('reqs/'+S.uid).set({items});$('#md').remove();alert('Request পাঠানো হয়েছে। Admin approve করলে access পাবে।')}catch(e){alert('Error: '+(e.message||e.code))}}
 function admin(A){if(!S.admin){A.innerHTML='<div class="card"><h3>⚠ Owner account দরকার</h3><p>Password ঠিক আছে, কিন্তু ডেটা পরিবর্তন করতে এই পেজটি যে claude.ai account থেকে বানানো হয়েছে সেই account দিয়ে sign in করে খুলতে হবে।</p><button class="btn ghost" onclick="adminOut()">Logout</button></div>';return}
-  const T=[['req','Requests'],['crs','Courses'],['pay','Payment Setup'],['stu','Students']];
+  const T=[['req','Requests'],['crs','Courses'],['pay','Payment Setup'],['stu','Students'],['upd','Updates']];
   let h=`<h2>Admin Panel <button class="btn ghost sm" onclick="adminOut()">Logout</button></h2><div class="tabs">${T.map(([k,l])=>`<button class="${S.admTab===k?'on':''}" onclick="S.admTab='${k}';render()">${l}${k==='req'?` (${pend().length})`:''}</button>`).join('')}</div>`;
   if(S.admTab==='req'){const p=pend();h+=`<div class="card">${p.length?p.map(r=>`<div class="row"><div><b>${esc(r.title)}</b> <span class="tag">${tk(r.amount)}</span><div class="mut">${esc(r.name)} · Sender: ${esc(r.sender)} · TrxID: <b>${esc(r.trx)}</b></div></div><div><button class="btn green sm" onclick="dec('${r.uid}','${r.rid}','${r.cid}',1)">Accept</button> <button class="btn red sm" onclick="dec('${r.uid}','${r.rid}','${r.cid}',0)">Reject</button></div></div>`).join(''):'<span class="mut">কোনো pending request নেই।</span>'}</div>`}
   if(S.admTab==='crs')h+=`<button class="btn" onclick="editC()">+ নতুন Course / Resource</button><div class="card" style="margin-top:12px">${S.courses.map(c=>`<div class="row"><div><b>${esc(c.title)}</b> <span class="tag">${c.type==='resource'?'Resource':'Course'}</span> <span class="mut">${tk(c.price)}</span></div><div><button class="btn ghost sm" onclick="editC('${c.id}')">Edit</button> <button class="btn red sm" onclick="delC('${c.id}')">Delete</button></div></div>`).join('')||'<span class="mut">কিছু নেই</span>'}</div>`;
   if(S.admTab==='pay'){const p=S.pay;h+=`<div class="card"><label>bKash নম্বর</label><input id="p1" value="${esc(p.bkash||'')}"><label>Nagad নম্বর</label><input id="p2" value="${esc(p.nagad||'')}"><label>Rocket নম্বর (optional)</label><input id="p3" value="${esc(p.rocket||'')}"><label>Note (যেমন: Send Money করবে)</label><input id="p4" value="${esc(p.note||'')}"><button class="btn" onclick="savePay()">Save</button></div>`}
   if(S.admTab==='stu')h+=`<div class="card">${S.accAll.filter(a=>(a.courses||[]).length).map(a=>`<div class="row"><div><b>${esc(S.allReqs.find(r=>r.uid===a.uid)?.name||a.uid)}</b><div class="mut">${a.courses.map(id=>esc(S.courses.find(c=>c.id===id)?.title||id)).join(', ')}</div></div><button class="btn red sm" onclick="revoke('${a.uid}')">Access বন্ধ</button></div>`).join('')||'<span class="mut">কেউ নেই</span>'}</div>`;
+  if(S.admTab==='upd')h+=`<button class="btn" onclick="editU()">+ নতুন Update</button><div class="card" style="margin-top:12px">${S.updates.map(u=>`<div class="row"><div><span class="tag ${tcls(u.tag)}">${esc(u.tag||'সাধারণ')}</span> <b>${esc(u.title)}</b><div class="mut">${fmt(u.ts)}</div></div><div><button class="btn ghost sm" onclick="editU('${u.id}')">Edit</button> <button class="btn red sm" onclick="delU('${u.id}')">Delete</button></div></div>`).join('')||'<span class="mut">কোনো update নেই</span>'}</div>`;
   A.innerHTML=h}
 const pend=()=>S.allReqs.filter(r=>{const a=S.accAll.find(x=>x.uid===r.uid)||{};return!(a.courses||[]).includes(r.cid)&&!(a.rejected||[]).includes(r.rid)}).sort((a,b)=>b.ts-a.ts);
 async function dec(uid,rid,cid,ok){const a=S.accAll.find(x=>x.uid===uid)||{},courses=[...(a.courses||[])],rejected=[...(a.rejected||[])];
@@ -135,6 +150,11 @@ async function saveC(id){const lessons=[...document.querySelectorAll('#lsn .lr')
   const d={type:$('#c0').value,title:$('#c1').value.trim(),desc:$('#c2').value.trim(),price:+$('#c3').value||0,icon:$('#c4').value.trim(),lessons,link:$('#c6').value.trim()};
   if(!d.title)return alert('Title দাও');id=id||'c'+Date.now();const {lessons:ls,link,...pub}=d;await db.doc('courses/'+id).set(pub);await db.doc('content/'+id).set({lessons:ls,link});$('#md').remove()}
 async function delC(id){if(confirm('Delete করবে?')){await db.doc('courses/'+id).delete();await db.doc('content/'+id).delete().catch(()=>{})}}
+function editU(id){const u=S.updates.find(x=>x.id===id)||{};const m=document.createElement('div');m.className='modal';m.id='md';
+  m.innerHTML=`<div><h3>${id?'Update Edit':'নতুন Update'}</h3><label>শিরোনাম</label><input id="u1" value="${esc(u.title||'')}"><label>বিস্তারিত</label><textarea id="u2" rows="5">${esc(u.text||'')}</textarea><label>ট্যাগ</label><select id="u3">${['নতুন','গুরুত্বপূর্ণ','ক্লাস','পরীক্ষা','সাধারণ'].map(t=>`<option ${u.tag===t?'selected':''}>${t}</option>`).join('')}</select><div style="display:flex;gap:8px"><button class="btn" onclick="saveU('${id||''}')">Publish</button><button class="btn ghost" onclick="$('#md').remove()">বাতিল</button></div></div>`;document.body.appendChild(m)}
+async function saveU(id){const t=$('#u1').value.trim();if(!t)return alert('শিরোনাম দাও');const old=S.updates.find(x=>x.id===id);
+  try{await db.doc('updates/'+(id||'u'+Date.now())).set({title:t,text:$('#u2').value.trim(),tag:$('#u3').value,ts:old?.ts||Date.now()});$('#md').remove()}catch(e){alert('Error: '+(e.message||e.code))}}
+async function delU(id){if(confirm('Delete করবে?'))await db.doc('updates/'+id).delete()}
 const ERR={'auth/invalid-credential':'Email বা Password ভুল','auth/email-already-in-use':'এই Email-এ আগেই account আছে','auth/weak-password':'Password কমপক্ষে ৬ অক্ষর দাও','auth/invalid-email':'Email সঠিক নয়','auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে, একটু পরে আবার দেখো'};
 function authOpen(mode){mode=mode||'login';const su=mode==='signup';$('#md')?.remove();const m=document.createElement('div');m.className='modal';m.id='md';
   m.innerHTML=`<div><h3>${su?'🆕 Sign Up':'🔐 Login'}</h3>${su?'<label>তোমার নাম</label><input id="a0" autocomplete="name">':''}<label>${su?'Email':'Email (Admin হলে Admin ID)'}</label><input id="a1" autocomplete="username"><label>Password</label><input id="a2" type="password" autocomplete="${su?'new-password':'current-password'}" placeholder="কমপক্ষে ৬ অক্ষর"><p id="aE" style="color:var(--bad);margin:0 0 8px"></p><div style="display:flex;gap:8px"><button class="btn" onclick="authGo('${mode}')">${su?'Account বানাও':'Login'}</button><button class="btn ghost" onclick="$('#md').remove()">বাতিল</button></div><p class="mut" style="margin-top:12px">${su?`আগে থেকেই account আছে? <a style="color:var(--pri);cursor:pointer" onclick="authOpen('login')">Login</a>`:`নতুন? <a style="color:var(--pri);cursor:pointer" onclick="authOpen('signup')">Sign Up</a> · <a style="color:var(--pri);cursor:pointer" onclick="resetPw()">Password ভুলে গেছ?</a>`}</p></div>`;document.body.appendChild(m)}
@@ -142,6 +162,6 @@ async function authGo(mode){const E=$('#aE');E.style.color='var(--bad)';E.textCo
   try{if(mode==='signup'){const n=$('#a0').value.trim();if(!n)return E.textContent='নাম দাও';const c=await createUserWithEmailAndPassword(auth,e,p);await updateProfile(c.user,{displayName:n});S.me={name:n,email:e};await setDoc(doc(fs,'users/'+c.user.uid),{name:n,email:e,ts:Date.now()});render()}else await signInWithEmailAndPassword(auth,e,p);$('#md')?.remove()}catch(x){E.textContent=ERR[x.code]||'সমস্যা হয়েছে, আবার চেষ্টা করো'}}
 async function resetPw(){const E=$('#aE'),e=$('#a1').value.trim();if(!e){E.textContent='আগে Email লেখো';return}try{await sendPasswordResetEmail(auth,e);E.style.color='var(--ok)';E.textContent='Reset link Email-এ পাঠানো হয়েছে'}catch(x){E.textContent=ERR[x.code]||'Email সঠিক নয়'}}
 async function logout(){await signOut(auth);go('home')}
-Object.assign(window,{S,$,render,go,buy,open_,submitReq,dec,revoke,savePay,editC,saveC,delC,addL,authOpen,authGo,resetPw,logout,adminOut:logout});
+Object.assign(window,{S,$,render,go,buy,open_,submitReq,dec,revoke,savePay,editC,saveC,delC,addL,authOpen,authGo,resetPw,logout,editU,saveU,delU,adminOut:logout});
 boot();
 </script></body></html>

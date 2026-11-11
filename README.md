@@ -24,3 +24,6 @@
 ## ৪. ব্যবহার
 Admin Login → **Payment Setup** (bKash/Nagad নম্বর) → **Courses** (course/resource, প্রতি lesson-এর আলাদা টাইটেল + YouTube লিংক)।
 Student Sign Up → Buy → Request → Admin **Accept** → My Learning-এ ভিডিও সাইটের ভেতরেই চলবে।
+
+## ৫. Updates
+Admin → **Updates** ট্যাব থেকে ঘোষণা যোগ/Edit/Delete করা যায়; Home ও Updates পেজে সাথে সাথে দেখায়। Rules ফাইল নতুন করে Publish করতে ভুলো না।
